@@ -1,0 +1,6 @@
+period: "*/10 * * * *"
+url:
+resources:
+  requests:
+    cpu: 5m
+    memory: 5Mi

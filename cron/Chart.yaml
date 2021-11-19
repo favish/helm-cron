@@ -1,0 +1,7 @@
+apiVersion: v1
+description: Run cron for drupal via curl
+name: cron
+maintainers:
+  - name: Favish
+    email: dev@favish.com
+version: 1.0.0

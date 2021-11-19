@@ -1,0 +1,8 @@
+# ConfigMap contains htpasswd and default site config
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: cron
+data:
+  customcron: |
+    {{ default "*/10 * * * *" .Values.period }} date -R && echo 'Running Drupal cron via wget...' && wget -O - -q -t 1 {{ .Values.url }}

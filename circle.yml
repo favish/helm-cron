@@ -1,0 +1,23 @@
+version: 2
+
+jobs:
+  build:
+    working_directory: ~/favish
+    docker:
+      - image: favish/build-deps-drupal:0.4.0
+    steps:
+      - checkout
+      - run:
+          name: Build and index new chart version and push
+          command: |
+            [ -z "$CIRCLE_TAG" ] && echo "No tag, exiting" && exit 0;
+            ./circle-create-new-version.sh
+
+workflows:
+  version: 2
+  main:
+    jobs:
+      - build:
+          filters:
+            tags:
+              only: /.*/
