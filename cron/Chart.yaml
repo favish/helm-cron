@@ -4,4 +4,5 @@ name: cron
 maintainers:
   - name: Favish
     email: dev@favish.com
-version: 1.0.0
+# If you're testing locally, you'll need to add the version to this.  It's currently added by CI via circle-create-new-version.sh
+# ie: version: 2.0.0-alpha
