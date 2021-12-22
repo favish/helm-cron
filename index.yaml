@@ -2,7 +2,18 @@ apiVersion: v1
 entries:
   cron:
   - apiVersion: v1
-    created: 2021-11-19T20:32:22.214470672Z
+    created: 2021-12-22T17:32:53.694634858Z
+    description: Run cron for drupal via curl
+    digest: d547c38e23696f4760e039dbc96492d6e3bdb82cbcf5ea47c105ac1e812dc436
+    maintainers:
+    - email: dev@favish.com
+      name: Favish
+    name: cron
+    urls:
+    - https://favish.github.io/helm-cron/cron-1.0.1.tgz
+    version: 1.0.1
+  - apiVersion: v1
+    created: 2021-12-22T17:32:53.6943656Z
     description: Run cron for drupal via curl
     digest: 340adcd061fcf1fd38df7d6a17dcba4a203e6ace7d8203719f99e5154424dd19
     maintainers:
@@ -10,6 +21,6 @@ entries:
       name: Favish
     name: cron
     urls:
-    - https://favish.github.com/helm-cron/cron-1.0.0.tgz
+    - https://favish.github.io/helm-cron/cron-1.0.0.tgz
     version: 1.0.0
-generated: 2021-11-19T20:32:22.214151879Z
+generated: 2021-12-22T17:32:53.693904863Z
