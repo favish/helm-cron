@@ -23,7 +23,7 @@ git checkout .
 git fetch origin gh-pages
 git checkout gh-pages
 
-helm repo index . --url https://favish.github.com/helm-$CHARTNAME
+helm repo index . --url https://favish.github.io/helm-$CHARTNAME
 
 git config --global user.name "favish-ci"
 git config --global user.email "dev@favish.com"
