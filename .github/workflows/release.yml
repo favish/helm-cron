@@ -23,13 +23,13 @@ jobs:
     env:
       CHART: cron
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
-      - uses: azure/setup-helm@v4
+      - uses: Azure/setup-helm@v5
         with:
-          version: v3.16.2
+          version: v4.2.1
 
       - name: Resolve version + publish mode
         id: ver
