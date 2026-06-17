@@ -1,0 +1,66 @@
+name: Release chart
+
+# Replaces the old CircleCI release (circle-create-new-version.sh). On a version
+# tag, package the chart and publish it to the gh-pages Helm repo. Uses the
+# built-in GITHUB_TOKEN for checkout + push, so no deploy/SSH key is needed.
+on:
+  push:
+    tags:
+      - '*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Dry-run version (chart is packaged + indexed but NOT pushed)'
+        required: false
+        default: 0.0.0-dryrun
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    env:
+      CHART: cron
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: azure/setup-helm@v4
+        with:
+          version: v3.16.2
+
+      - name: Resolve version + publish mode
+        id: ver
+        run: |
+          if [ "${{ github.event_name }}" = "push" ]; then
+            echo "version=${GITHUB_REF_NAME}" >> "$GITHUB_OUTPUT"
+            echo "publish=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "version=${{ github.event.inputs.version }}" >> "$GITHUB_OUTPUT"
+            echo "publish=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Package chart
+        run: |
+          set -euo pipefail
+          # CI stamps the version into Chart.yaml (it has none in the repo).
+          printf '\nversion: %s\n' "${{ steps.ver.outputs.version }}" >> "./${CHART}/Chart.yaml"
+          helm package --destination /tmp/pkg "./${CHART}"
+          ls -lh /tmp/pkg
+
+      - name: Publish to gh-pages
+        if: steps.ver.outputs.publish == 'true'
+        run: |
+          set -euo pipefail
+          git config user.name "favish-ci"
+          git config user.email "dev@favish.com"
+          git fetch origin gh-pages
+          git worktree add /tmp/ghp origin/gh-pages
+          cp "/tmp/pkg/${CHART}-${{ steps.ver.outputs.version }}.tgz" /tmp/ghp/
+          cd /tmp/ghp
+          helm repo index . --url "https://favish.github.io/helm-${CHART}"
+          git add .
+          git commit -m "Create ${CHART} version ${{ steps.ver.outputs.version }} [ci skip]"
+          git push origin HEAD:gh-pages
